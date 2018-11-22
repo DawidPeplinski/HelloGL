@@ -45,7 +45,7 @@ void Mesh::Draw() {
 	glBindVertexArray(m_vertexArrayObject);
 
 	// (mode, where to start, how many to draw (all the data is all the vertices here))
-	glDrawArrays(GL_TRIANGLES, 0, m_drawCount);
+	glDrawArrays(GL_POLYGON, 0, m_drawCount);
 
 	// unbind
 	glBindVertexArray(0);
