@@ -6,16 +6,19 @@
 CPP_SRCS += \
 ../src/display.cpp \
 ../src/main.cpp \
+../src/mesh.cpp \
 ../src/shader.cpp 
 
 OBJS += \
 ./src/display.o \
 ./src/main.o \
+./src/mesh.o \
 ./src/shader.o 
 
 CPP_DEPS += \
 ./src/display.d \
 ./src/main.d \
+./src/mesh.d \
 ./src/shader.d 
 
 
