@@ -6,6 +6,7 @@
  */
 
 #include "mesh.h"
+#include <vector>
 
 Mesh::Mesh(Vertex* vertices, unsigned int numVertices) {
 	m_drawCount = numVertices;
@@ -13,27 +14,29 @@ Mesh::Mesh(Vertex* vertices, unsigned int numVertices) {
 	glGenVertexArrays(1, &m_vertexArrayObject);
 	glBindVertexArray(m_vertexArrayObject);
 
-	// get buffers to write data to
-	glGenBuffers(NUM_BUFFERS, m_vertexArrayBuffers);
-	glBindBuffer(GL_ARRAY_BUFFER, m_vertexArrayBuffers[POSITION_VB]);
-	// put our vertex data into array
-	// sizeof is compile-time working, so the size of vertices is unknown
-	// GL_STATIC_DRAW is a draw hint, which says that we are not going to modify this data
-	// so the data is located in fast to acces memory block, but not good to write
-	glBufferData(GL_ARRAY_BUFFER, numVertices * sizeof(vertices[0]), vertices, GL_STATIC_DRAW);
+	std::vector<glm::vec3> positions;
+	std::vector<glm::vec2> texCoords;
+	positions.reserve(numVertices);
+	texCoords.reserve(numVertices);
+	for(unsigned int i = 0; i < numVertices; i++) {
+		positions.push_back(*vertices[i].GetPos());
+		texCoords.push_back(*vertices[i].GetTexCoord());
+	}
 
-	// "hey there's going to be some attrib array and this is going to be the data
-	// in attrbi array [0]" ("glm::vec3 pos" in our example)
-	// in other words, we are telling the GL how to interpret the data
+	glGenBuffers(NUM_BUFFERS, m_vertexArrayBuffers);
+
+	glBindBuffer(GL_ARRAY_BUFFER, m_vertexArrayBuffers[POSITION_VB]);
+	glBufferData(GL_ARRAY_BUFFER, numVertices * sizeof(positions[0]), &positions[0], GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
-	// and now we are telling how many data should be interpreted:
-	// (vec3 = 3 pieces, floating point data type, normalize type,
-	// how many data to skip before find another attribute (we have only the pos, so "0")
-	// how many data to skip at the beginning to get the wanted attrib (again "0"))
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-	// unbinding m_vertexArrayObject
+	glBindBuffer(GL_ARRAY_BUFFER, m_vertexArrayBuffers[TEXCOORD_VB]);
+	glBufferData(GL_ARRAY_BUFFER, numVertices * sizeof(texCoords[0]), &texCoords[0], GL_STATIC_DRAW);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
+
 	glBindVertexArray(0);
+	// the proccess explanation still persists on "mesh_creation" branch
 }
 
 Mesh::~Mesh() {
