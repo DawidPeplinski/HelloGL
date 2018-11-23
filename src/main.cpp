@@ -8,7 +8,7 @@
 
 int main()
 {
-	Display display(800, 600, "Hello GL");
+	Display display(1024, 768, "Hello GL");
 
 	Vertex vertices[] = { 	Vertex(glm::vec3(-0.5, -0.5,-0.5)),
 							Vertex(glm::vec3(0.5, -0.5, -0.5)),
@@ -51,24 +51,33 @@ int main()
 		display.Clear(0.0f, 0.15f, 0.3f, 1.0f);
 		// we can do it because getters return references
 		transform.GetRot().x = counter;
-		transform.GetRot().y = 4*counter;
+		transform.GetRot().y = 3*counter;
 
 		float cosCounter = cosf(counter/2);
 		transform.SetScale(glm::vec3(cosCounter, cosCounter, cosCounter));
+		texture.Bind(0);
+		shader.Bind();
 
 		transform.SetColor(glm::vec4(1.0, 0.0, 0.0, 1.0));
 		shader.Update(transform);
-		texture.Bind(0);
-		shader.Bind();
 		mesh.Draw();
+
+		transform.SetColor(glm::vec4(0.0, 0.0, 1.0, 1.0));
+		shader.Update(transform);
 		mesh1.Draw();
+
 		transform.SetColor(glm::vec4(0.0, 1.0, 0.0, 1.0));
 		shader.Update(transform);
 		mesh2.Draw();
-		mesh3.Draw();
-		transform.SetColor(glm::vec4(0.0, 0.0, 1.0, 1.0));
+
+		transform.SetColor(glm::vec4(1.0, 1.0, 0.0, 1.0));
 		shader.Update(transform);
-		mesh4.Draw();
+		mesh3.Draw();
+
+//		transform.SetColor(glm::vec4(0.0, 0.0, 1.0, 1.0));
+//		shader.Update(transform);
+//		mesh4.Draw();
+
 		display.Update();
 		counter += 0.01f;
 	}
