@@ -56,8 +56,8 @@ void Shader::Unbind() {
 	glUseProgram(0);
 }
 
-void Shader::Update(const Transform& transform) {
-	glm::mat4 model = transform.GetModel();
+void Shader::Update(const Transform& transform, const Camera& camera) {
+	glm::mat4 model = camera.GetViewProjection() * transform.GetModel();
 	glm::vec4 color = transform.GetColorModel();
 	glUniformMatrix4fv(m_uniforms[TRANSFORM_U], 1, GL_FALSE, &model[0][0]);
 	glUniform4fv(m_uniforms[COLOR_U], 1, reinterpret_cast<GLfloat *>(&color[0]));
