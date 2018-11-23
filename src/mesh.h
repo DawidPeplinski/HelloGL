@@ -18,6 +18,10 @@ public:
 		this->texCoord.x = (pos.x + 1) / 2;
 		this->texCoord.y = (pos.y + 1)/2;
 	}
+	Vertex(const glm::vec3& pos, const glm::vec2& texPos) {
+		this->pos = pos;
+		this->texCoord = texPos;
+	}
 	inline glm::vec3* GetPos() { return &pos; }
 	inline glm::vec2* GetTexCoord() { return &texCoord; }
 protected:

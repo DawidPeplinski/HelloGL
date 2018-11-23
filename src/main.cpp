@@ -10,13 +10,38 @@ int main()
 {
 	Display display(800, 600, "Hello GL");
 
-	Vertex vertices[] = { 	Vertex(glm::vec3(-0.5, -0.5, 0.0)),
-							Vertex(glm::vec3(-0.3, 0.0, 0.0)),
-							Vertex(glm::vec3(0.3, 0.0, 0.0)),
-							Vertex(glm::vec3(0.5, -0.5, 0.0)),
+	Vertex vertices[] = { 	Vertex(glm::vec3(-0.5, -0.5,-0.5)),
+							Vertex(glm::vec3(0.5, -0.5, -0.5)),
+							Vertex(glm::vec3(0.0, 0.5, 0.0)),
 	};
 	Mesh mesh(vertices, sizeof(vertices)/sizeof(vertices[0]));
-	Shader shader("./res/shaders/transformShader");
+
+	Vertex vertices1[] = { 	Vertex(glm::vec3(-0.5, -0.5,0.5)),
+							Vertex(glm::vec3(0.5, -0.5, 0.5)),
+							Vertex(glm::vec3(0.0, 0.5, 0.0)),
+	};
+	Mesh mesh1(vertices1, sizeof(vertices1)/sizeof(vertices1[0]));
+
+	Vertex vertices2[] = { 	Vertex(glm::vec3(-0.5, -0.5, -0.5), glm::vec2(0.0, 0.0)),
+							Vertex(glm::vec3(-0.5, -0.5, 0.5), glm::vec2(1.0, 0.0)),
+							Vertex(glm::vec3(0.0, 0.5, 0.0), glm::vec2(0.5, 1.0)),
+	};
+	Mesh mesh2(vertices2, sizeof(vertices2)/sizeof(vertices2[0]));
+
+	Vertex vertices3[] = { 	Vertex(glm::vec3(0.5, -0.5, -0.5), glm::vec2(0.0, 0.0)),
+							Vertex(glm::vec3(0.5, -0.5, 0.5), glm::vec2(1.0, 0.0)),
+							Vertex(glm::vec3(0.0, 0.5, 0.0), glm::vec2(0.5, 1.0)),
+	};
+	Mesh mesh3(vertices3, sizeof(vertices3)/sizeof(vertices3[0]));
+
+	Vertex vertices4[] = { 	Vertex(glm::vec3(-0.5, -0.5, -0.5), glm::vec2(0.0, 0.0)),
+							Vertex(glm::vec3(0.5, -0.5, -0.5), glm::vec2(1.0, 0.0)),
+							Vertex(glm::vec3(0.5, -0.5, 0.5), glm::vec2(1.0, 1.0)),
+							Vertex(glm::vec3(-0.5, -0.5, 0.5), glm::vec2(0.0, 1.0)),
+	};
+	Mesh mesh4(vertices4, sizeof(vertices4)/sizeof(vertices4[0]));
+
+	Shader shader("./res/shaders/transform_color_Shader");
 	Texture texture("./res/textures/bricks.jpg");
 	Transform transform;
 
@@ -24,18 +49,26 @@ int main()
 
 	while(!display.isClosed()) {
 		display.Clear(0.0f, 0.15f, 0.3f, 1.0f);
-
-		float sinCounter = sinf(counter);
-		float cosCounter = cosf(counter);
 		// we can do it because getters return references
-		transform.GetPos().x = sinCounter;
-		transform.GetRot().z = counter;
+		transform.GetRot().x = counter;
+		transform.GetRot().y = 4*counter;
+
+		float cosCounter = cosf(counter/2);
 		transform.SetScale(glm::vec3(cosCounter, cosCounter, cosCounter));
 
-		shader.Bind();
+		transform.SetColor(glm::vec4(1.0, 0.0, 0.0, 1.0));
 		shader.Update(transform);
 		texture.Bind(0);
+		shader.Bind();
 		mesh.Draw();
+		mesh1.Draw();
+		transform.SetColor(glm::vec4(0.0, 1.0, 0.0, 1.0));
+		shader.Update(transform);
+		mesh2.Draw();
+		mesh3.Draw();
+		transform.SetColor(glm::vec4(0.0, 0.0, 1.0, 1.0));
+		shader.Update(transform);
+		mesh4.Draw();
 		display.Update();
 		counter += 0.01f;
 	}

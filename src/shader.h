@@ -16,6 +16,7 @@ class Shader {
 public:
 	Shader(const std::string& fileName);
 	void Bind();
+	void Unbind();
 	void Update(const Transform& transform);
 
 	virtual ~Shader();
@@ -28,6 +29,7 @@ private:
 
 	enum {
 		TRANSFORM_U,
+		COLOR_U,
 
 		NUM_UNIFORMS
 	};
