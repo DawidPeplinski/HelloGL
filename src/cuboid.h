@@ -61,6 +61,10 @@ public:
 	inline void SetRot(glm::vec3 rot) { m_rot = rot; }
 	inline void SetScale(glm::vec3 scale) { m_scale = scale; }
 
+	inline glm::vec3 GetPos() { return m_pos; }
+	inline glm::vec3 GetRot() { return m_rot; }
+	inline glm::vec3 GetScale() { return m_scale; }
+
 protected:
 private:
 	Transform transform;
