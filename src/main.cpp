@@ -14,34 +14,37 @@ int main()
 {
 	Display display(WIDTH, HEIGHT, "Hello GL");
 
+	unsigned int indices[] = { 0, 1, 2 };
 	Vertex vertices[] = { 	Vertex(glm::vec3(-0.5, -0.5,-0.5)),
 							Vertex(glm::vec3(0.5, -0.5, -0.5)),
 							Vertex(glm::vec3(0.0, 0.5, 0.0)),
 	};
-	Mesh mesh(vertices, sizeof(vertices)/sizeof(vertices[0]));
+	Mesh mesh(vertices, sizeof(vertices)/sizeof(vertices[0]), indices, sizeof(indices)/sizeof(indices[0]));
 
 	Vertex vertices1[] = { 	Vertex(glm::vec3(-0.5, -0.5,0.5)),
 							Vertex(glm::vec3(0.5, -0.5, 0.5)),
 							Vertex(glm::vec3(0.0, 0.5, 0.0)),
 	};
-	Mesh mesh1(vertices1, sizeof(vertices1)/sizeof(vertices1[0]));
+	Mesh mesh1(vertices1, sizeof(vertices1)/sizeof(vertices1[0]), indices, sizeof(indices)/sizeof(indices[0]));
 
 	Vertex vertices2[] = { 	Vertex(glm::vec3(-0.5, -0.5, -0.5), glm::vec2(0.0, 0.0)),
 							Vertex(glm::vec3(-0.5, -0.5, 0.5), glm::vec2(1.0, 0.0)),
 							Vertex(glm::vec3(0.0, 0.5, 0.0), glm::vec2(0.5, 1.0)),
 	};
-	Mesh mesh2(vertices2, sizeof(vertices2)/sizeof(vertices2[0]));
+	Mesh mesh2(vertices2, sizeof(vertices2)/sizeof(vertices2[0]), indices, sizeof(indices)/sizeof(indices[0]));
 
 	Vertex vertices3[] = { 	Vertex(glm::vec3(0.5, -0.5, -0.5), glm::vec2(0.0, 0.0)),
 							Vertex(glm::vec3(0.5, -0.5, 0.5), glm::vec2(1.0, 0.0)),
 							Vertex(glm::vec3(0.0, 0.5, 0.0), glm::vec2(0.5, 1.0)),
 	};
-	Mesh mesh3(vertices3, sizeof(vertices3)/sizeof(vertices3[0]));
+	Mesh mesh3(vertices3, sizeof(vertices3)/sizeof(vertices3[0]), indices, sizeof(indices)/sizeof(indices[0]));
 
-	Shader shader("./res/shaders/transform_color_Shader");
+	Mesh monkey_mesh("./res/models/monkey3.obj");
+
+	Shader shader("./res/shaders/transformShader");
 	Texture texture("./res/textures/bricks.jpg");
 	// (camera pos, field of view (degrees), aspect ratio, decide when we see something very close, decide when we see something far away)
-	Camera camera(glm::vec3(0, 0, -2.0), 70.0f, (float)WIDTH/(float)HEIGHT, 0.01f, 1000.0f);
+	Camera camera(glm::vec3(0, 0, -4.0), 60.0f, (float)WIDTH/(float)HEIGHT, 0.01f, 1000.0f);
 	Transform transform;
 
 	float counter = 0.0f;
@@ -57,21 +60,25 @@ int main()
 		texture.Bind(0);
 		shader.Bind();
 
-		transform.SetColor(glm::vec4(1.0, 0.0, 0.0, 1.0));
-		shader.Update(transform, camera);
-		mesh.Draw();
 
-		transform.SetColor(glm::vec4(0.0, 0.0, 1.0, 1.0));
 		shader.Update(transform, camera);
-		mesh1.Draw();
+		monkey_mesh.Draw();
 
-		transform.SetColor(glm::vec4(0.0, 1.0, 0.0, 1.0));
-		shader.Update(transform, camera);
-		mesh2.Draw();
-
-		transform.SetColor(glm::vec4(1.0, 1.0, 0.0, 1.0));
-		shader.Update(transform, camera);
-		mesh3.Draw();
+//		transform.SetColor(glm::vec4(1.0, 0.0, 0.0, 1.0));
+//		shader.Update(transform, camera);
+//		mesh.Draw();
+//
+//		transform.SetColor(glm::vec4(0.0, 0.0, 1.0, 1.0));
+//		shader.Update(transform, camera);
+//		mesh1.Draw();
+//
+//		transform.SetColor(glm::vec4(0.0, 1.0, 0.0, 1.0));
+//		shader.Update(transform, camera);
+//		mesh2.Draw();
+//
+//		transform.SetColor(glm::vec4(1.0, 1.0, 0.0, 1.0));
+//		shader.Update(transform, camera);
+//		mesh3.Draw();
 
 		display.Update();
 		counter += 0.01f;
