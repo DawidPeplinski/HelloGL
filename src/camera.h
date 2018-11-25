@@ -12,7 +12,7 @@ public:
 		m_perspective = glm::perspective((float)(fov*180.0/M_PI), aspect, zNear, zFar);
 		m_position = pos;
 		// looking straight into the screen (Z-axis)
-		m_forward = glm::vec3(0,0,1);
+		m_forward = glm::vec3(-1,-1,2);
 		// the Y-axis as up angle
 		m_up = glm::vec3(0,1,0);
 	}

@@ -16,6 +16,7 @@ public:
 	Texture(const std::string& fileName);
 	// unit determines which texture we are choosing
 	void Bind(unsigned int unit);
+	void Unbind();
 
 	virtual ~Texture();
 protected:

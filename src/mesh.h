@@ -33,14 +33,13 @@ private:
 class Mesh {
 public:
 	Mesh(Vertex* vertices, unsigned int numVertices);
-
+	Mesh(const Mesh& other);
 	void Draw();
 
 	virtual ~Mesh();
 
 protected:
 private:
-	Mesh(const Mesh& other);
 	void operator=(const Mesh& other);
 
 	enum {
