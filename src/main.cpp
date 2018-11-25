@@ -2,9 +2,7 @@
 #include <GL/glew.h>
 #include "display.h"
 #include "shader.h"
-#include "mesh.h"
 #include "texture.h"
-#include "transform.h"
 #include "camera.h"
 #include "cuboid.h"
 
@@ -14,7 +12,7 @@
 int main()
 {
 	Display display(WIDTH, HEIGHT, "Hello GL");
-	Camera camera(glm::vec3(4, 2, -5), 70.0f, (float)WIDTH/(float)HEIGHT, 0.01f, 1000.0f);
+	Camera camera(glm::vec3(3, 1, -4), 70.0f, (float)WIDTH/(float)HEIGHT, 0.01f, 1000.0f);
 	Shader sh_texturing("./res/shaders/texture");
 	Shader sh_coloring("./res/shaders/color");
 	Texture tex_bricks("./res/textures/bricks.jpg");

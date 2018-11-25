@@ -9,7 +9,7 @@ public:
 	Camera(const glm::vec3& pos, float fov, float aspect, float zNear, float zFar) {
 		// we do not create setters and getters, because the perspective changes only when windows resizes
 		// we can add setters/getters for camera angles if we want to change them in future
-		m_perspective = glm::perspective(fov, aspect, zNear, zFar);
+		m_perspective = glm::perspective((float)(fov*M_PI/180.0), aspect, zNear, zFar);
 		m_position = pos;
 		// looking into the center of sreen (opposite to camera's pos)
 		m_forward = glm::vec3(-pos.x, -pos.y, -pos.z);
