@@ -30,7 +30,7 @@ Display::Display(int width, int height, const std::string& title)
 	m_isClosed = false;
 
 	// the buffer stores pixels Z location and when before overwrites it, checks its distance from camera
-//	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CCW);
 	glCullFace(GL_BACK);
