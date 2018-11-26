@@ -52,15 +52,35 @@ void Mesh::InitMesh(const IndexedModel& model) {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, model.indices.size() * sizeof(model.indices[0]), &model.indices[0], GL_STATIC_DRAW);
 
 	glBindVertexArray(0);
+
+	m_pos = glm::vec3(0, 0, 0);
+	m_rot = glm::vec3(0, 0, 0);
+	m_scale = glm::vec3(1.0f, 1.0f, 1.0f);
+	m_color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
-void Mesh::Draw() {
-	// bind our vertex array to draw its attributes
+void Mesh::Draw(Texture& texture, Shader& shader, Camera& camera) {
+	shader.Bind();
+	texture.Bind(0);
+	DrawMesh(shader, camera);
+	texture.Unbind();
+	shader.Unbind();
+}
+
+void Mesh::Draw(Shader& shader, Camera& camera) {
+	shader.Bind();
+	DrawMesh(shader, camera);
+	shader.Unbind();
+}
+
+void Mesh::DrawMesh(Shader& shader, Camera& camera) {
+	transform.SetPos(m_pos);
+	transform.SetRot(m_rot);
+	transform.SetScale(m_scale);
+	transform.SetColor(m_color);
+	shader.Update(transform, camera);
+
 	glBindVertexArray(m_vertexArrayObject);
-
-	// now we draw elements from points
 	glDrawElements(GL_TRIANGLES, m_drawCount, GL_UNSIGNED_INT, 0);
-
-	// unbind
 	glBindVertexArray(0);
 }

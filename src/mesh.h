@@ -12,6 +12,10 @@
 #include <GL/glew.h>
 #include <string>
 #include "obj_loader.h"
+#include "transform.h"
+#include "texture.h"
+#include "shader.h"
+#include "camera.h"
 
 class Vertex {
 public:
@@ -37,26 +41,39 @@ public:
 	Mesh(Vertex* vertices, unsigned int numVertices, unsigned int* indices, unsigned int numIndices);
 	Mesh(const std::string& fileName);
 	Mesh(const Mesh& other);
-	void Draw();
+	void Draw(Texture& texture, Shader& shader, Camera& camera);
+	void Draw(Shader& shader, Camera& camera);
+
+	inline void SetPos(glm::vec3 pos) { m_pos = pos; }
+	inline void SetRot(glm::vec3 rot) { m_rot = rot; }
+	inline void SetScale(glm::vec3 scale) { m_scale = scale; }
+	inline void SetColor(const glm::vec4& color) { m_color = color; }
+
+	inline glm::vec3 GetPos() { return m_pos; }
+	inline glm::vec3 GetRot() { return m_rot; }
+	inline glm::vec3 GetScale() { return m_scale; }
 
 	virtual ~Mesh();
 
 protected:
 private:
 	void operator=(const Mesh& other);
-
 	void InitMesh(const IndexedModel& model);
-
+	void DrawMesh(Shader& shader, Camera& camera);
 	enum {
 		POSITION_VB,
 		TEXCOORD_VB,
 		INDEX_VB,
 		NUM_BUFFERS
 	};
-
 	GLuint m_vertexArrayObject;
 	GLuint m_vertexArrayBuffers[NUM_BUFFERS];
 	unsigned int m_drawCount;
+	Transform transform;
+	glm::vec3 m_pos;
+	glm::vec3 m_rot;
+	glm::vec3 m_scale;
+	glm::vec4 m_color;
 };
 
 #endif /* MESH_H_ */
