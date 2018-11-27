@@ -41,6 +41,7 @@ public:
 	Mesh(Vertex* vertices, unsigned int numVertices, unsigned int* indices, unsigned int numIndices);
 	Mesh(const std::string& fileName);
 	Mesh(const Mesh& other);
+	void operator=(const Mesh& other);
 	void Draw(Texture& texture, Shader& shader, Camera& camera);
 	void Draw(Shader& shader, Camera& camera);
 
@@ -57,7 +58,6 @@ public:
 
 protected:
 private:
-	void operator=(const Mesh& other);
 	void InitMesh(const IndexedModel& model);
 	void DrawMesh(Shader& shader, Camera& camera);
 	enum {

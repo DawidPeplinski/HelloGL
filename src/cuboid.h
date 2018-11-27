@@ -32,6 +32,8 @@ public:
 			mesh[1].SetColor(glm::vec4(0.0, 1.0, 0.0, 1.0));
 			mesh[2].SetColor(glm::vec4(0.0, 0.0, 1.0, 1.0));
 		}
+		Cuboid(const Cuboid& other);
+		void operator=(const Cuboid& other);
 
 		void Draw(Shader& shader, Camera& camera) {
 			mesh[0].Draw(shader, camera);
