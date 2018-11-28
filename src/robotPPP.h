@@ -9,6 +9,7 @@
 #define ROBOTPPP_H_
 
 #include "cuboid.h"
+#include <iostream>
 
 #define EPS 0.0001
 
@@ -31,23 +32,23 @@ public:
 		glm::vec3 dist(glm::vec3(curr_pos.x - curr_target.x, curr_pos.y - curr_target.y, curr_pos.z - curr_target.z));
 		if(abs(dist.x) > EPS) {
 			float mult = EPS*50.0;
-//			if(abs(dist.x) < 0.1) {
-//				mult = (1.0 - cosf(10.0*dist.x*M_PI/2.0))*mult;
-//			}
+			if(abs(dist.x) < 0.08) {
+				mult = (1.0 - cosf(10.0*(abs(dist.x) + 0.02)*M_PI/2.0))*mult;
+			}
 			curr_pos.x += (dist.x > 0) ? -1.0*mult : mult;
 		}
 		if(abs(dist.y) > EPS) {
 			float mult = EPS*50.0;
-//			if(abs(dist.y) < 0.1) {
-//				mult = (1.0 - cosf(10.0*dist.y*M_PI/2.0))*mult;
-//			}
+			if(abs(dist.y) < 0.08) {
+				mult = (1.0 - cosf(10.0*(abs(dist.y) + 0.02)*M_PI/2.0))*mult;
+			}
 			curr_pos.y += (dist.y > 0) ? -1.0*mult : mult;
 		}
 		if(abs(dist.z) > EPS) {
 			float mult = EPS*50.0;
-//			if(abs(dist.z) < 0.1) {
-//				mult = (1.0 - cosf(10.0*dist.z*M_PI/2.0))*mult;
-//			}
+			if(abs(dist.z) < 0.08) {
+				mult = (1.0 - cosf(10.0*(abs(dist.z) + 0.02)*M_PI/2.0))*mult;
+			}
 			curr_pos.z += (dist.z > 0) ? -1.0*mult : mult;
 		}
 		SetPos(curr_pos);
@@ -58,7 +59,11 @@ public:
 	}
 
 	void SetTarget(glm::vec3 target) {
-		curr_target = target;
+		curr_target.x = (target.x <= 1.0f && target.x >= 0.0f) ? target.x : curr_target.x;
+		curr_target.y = (target.y <= 1.0f && target.y >= 0.0f) ? target.y : curr_target.y;
+		curr_target.z = (target.z <= 0.5f && target.z >= 0.0f) ? target.z : curr_target.z;
+		std::system("clear");
+		std::cout << "Current target: x = " << curr_target.x << ", y = " << curr_target.y << ", z = " << curr_target.z << std::endl;
 	}
 
 protected:

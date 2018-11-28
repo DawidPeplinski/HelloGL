@@ -9,20 +9,14 @@
 int main()
 {
 	Display display(WIDTH, HEIGHT, "Hello GL");
-	Camera camera(glm::vec3(2, 1.5, 5), 70.0f, (float)WIDTH/(float)HEIGHT, 0.01f, 1000.0f);
+	Camera camera(glm::vec3(4, 2.0, 4), 70.0f, (float)WIDTH/(float)HEIGHT, 0.01f, 1000.0f);
 	Shader sh_coloring("./res/shaders/color");
 
 	RobotPPP robot(5.0, 0.25);
-	robot.SetTarget(glm::vec3(1.0, 1.0, 0.0));
-
-	float counter = 0.0f;
 	while(!display.isClosed()) {
 		display.Clear(0.0f, 0.15f, 0.3f, 1.0f);
-
 		robot.Draw(sh_coloring, camera);
-
-		counter += 0.01f;
-		display.Update();
+		display.Update(robot);
 	}
 
 	return 0;
