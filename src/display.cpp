@@ -37,12 +37,11 @@ Display::Display(int width, int height, const std::string& title)
 	glCullFace(GL_BACK);
 
 	m_text = "";
-	SDL_StartTextInput();
+	m_textInputActive = false;
 }
 
 Display::~Display()
 {
-	SDL_StopTextInput();
 	SDL_GL_DeleteContext(m_glContext);
 	SDL_DestroyWindow(m_window);
 	SDL_Quit();
@@ -54,7 +53,7 @@ void Display::Clear(float r, float g, float b, float a)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Display::Update(RobotPPP& robot)
+void Display::Update(Camera& camera, RobotPPP& robot)
 {
 	SDL_GL_SwapWindow(m_window);
 
@@ -63,7 +62,7 @@ void Display::Update(RobotPPP& robot)
 		if(e.type == SDL_QUIT) {
 			m_isClosed = true;
 		}
-		else if(e.type == SDL_TEXTINPUT) {
+		else if(e.type == SDL_TEXTINPUT && m_textInputActive) {
 			std::system("clear");
 			m_text += e.text.text;
 			std::cout << m_text << std::endl;
@@ -73,52 +72,45 @@ void Display::Update(RobotPPP& robot)
 			case SDLK_BACKSPACE:
 				if(m_text.length() > 0) {
 					m_text = m_text.substr(0, m_text.length() - 1);
+					std::system("clear");
+					std::cout << m_text << std::endl;
 				}
-				std::system("clear");
-				std::cout << m_text << std::endl;
 				break;
 
 			case SDLK_RETURN:
-				char* ptr = (char *)strstr(m_text.c_str(), "x:");
-				float x = (ptr != NULL) ? strtof(ptr + 2, NULL) : -1.0f;
-				ptr = (char *)strstr(m_text.c_str(), "y:");
-				float y = (ptr != NULL) ? strtof(ptr + 2, NULL) : -1.0f;
-				ptr = (char *)strstr(m_text.c_str(), "z:");
-				float z = (ptr != NULL) ? strtof(ptr + 2, NULL) : -1.0f;
-				m_text = "";
-				robot.SetTarget(glm::vec3(x, y, z));
+				if(m_textInputActive) {
+					char* ptr = (char *)strstr(m_text.c_str(), "x:");
+					float x = (ptr != NULL) ? strtof(ptr + 2, NULL) : -1.0f;
+					ptr = (char *)strstr(m_text.c_str(), "y:");
+					float y = (ptr != NULL) ? strtof(ptr + 2, NULL) : -1.0f;
+					ptr = (char *)strstr(m_text.c_str(), "z:");
+					float z = (ptr != NULL) ? strtof(ptr + 2, NULL) : -1.0f;
+					m_text = "";
+					robot.SetTarget(glm::vec3(x, y, z));
+				} else {
+					std::cout << "Write coordinates according to a template: x: 0.5 y: 0.6 z: 0.7" << std::endl;
+				}
+				m_textInputActive = !m_textInputActive;
 				break;
 			}
 		}
-//		for this application we dont need a handler
-//		KeyboardHandler(e);
-	}
-}
-
-void Display::KeyboardHandler(SDL_Event& e)
-{
-	if(e.type == SDL_KEYDOWN) {
-		switch(e.key.keysym.sym) {
-		case SDLK_w:
-			break;
-		case SDLK_s:
-			break;
-		case SDLK_a:
-			break;
-		case SDLK_d:
-			break;
-		}
-	}
-	else if(e.type == SDL_KEYUP) {
-		switch(e.key.keysym.sym) {
-		case SDLK_w:
-			break;
-		case SDLK_s:
-			break;
-		case SDLK_a:
-			break;
-		case SDLK_d:
-			break;
+		if(!m_textInputActive) {
+			if(e.type == SDL_KEYDOWN) {
+				switch(e.key.keysym.sym) {
+				case SDLK_w:
+					camera.MoveCamera(glm::vec3(0.0, 0.1, 0.0));
+					break;
+				case SDLK_s:
+					camera.MoveCamera(glm::vec3(0.0, -0.1, 0.0));
+					break;
+				case SDLK_a:
+					camera.MoveCamera(glm::vec3(0.0, 0.0, 0.1));
+					break;
+				case SDLK_d:
+					camera.MoveCamera(glm::vec3(0.0, 0.0, -0.1));
+					break;
+				}
+			}
 		}
 	}
 }

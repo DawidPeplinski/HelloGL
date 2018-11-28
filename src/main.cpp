@@ -16,7 +16,7 @@ int main()
 	while(!display.isClosed()) {
 		display.Clear(0.0f, 0.15f, 0.3f, 1.0f);
 		robot.Draw(sh_coloring, camera);
-		display.Update(robot);
+		display.Update(camera, robot);
 	}
 
 	return 0;

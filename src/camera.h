@@ -10,7 +10,7 @@ public:
 		m_perspective = glm::perspective((float)(fov*M_PI/180.0), aspect, zNear, zFar);
 		LookFrom(pos);
 		// looking into the center of sreen (opposite to camera's pos)
-		LookAt(glm::vec3(-pos.x, -pos.y, -pos.z));
+		LookAt(-pos);
 		// the Y-axis as up angle
 		m_up = glm::vec3(0,1,0);
 	}
@@ -25,6 +25,11 @@ public:
 
 	inline void LookAt(glm::vec3 pos) {
 		m_forward = pos;
+	}
+
+	inline void MoveCamera(glm::vec3 pos) {
+		m_position += pos;
+		LookAt(-m_position);
 	}
 
 protected:
