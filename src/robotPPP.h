@@ -16,6 +16,9 @@
 class RobotPPP {
 public:
 	RobotPPP(float len, float width) :
+	cuboid_x_axis { glm::vec3(len*2, 0.05, 0.05) },
+	cuboid_y_axis { glm::vec3(0.05, 0.05, len*2) },
+	cuboid_z_axis { glm::vec3(0.05, len*2, 0.05) },
 	cuboid_x { glm::vec3(width, width, len) },
 	cuboid_y { glm::vec3(len, width, width) },
 	cuboid_z { glm::vec3(width, len/2.0, width) },
@@ -25,6 +28,9 @@ public:
 	max_z(-min_z),
 	curr_pos(glm::vec3(0, 0, 0)),
 	curr_target(curr_pos) {
+		cuboid_x_axis.SetPos(glm::vec3(min_xy + len, 0.0, min_xy));
+		cuboid_y_axis.SetPos(glm::vec3(min_xy, 0.0, min_xy + len));
+		cuboid_z_axis.SetPos(glm::vec3(min_xy, -len, min_xy));
 		SetPos(curr_pos);
 	}
 
@@ -53,6 +59,9 @@ public:
 		}
 		SetPos(curr_pos);
 
+		cuboid_x_axis.Draw(shader, camera);
+		cuboid_y_axis.Draw(shader, camera);
+		cuboid_z_axis.Draw(shader, camera);
 		cuboid_x.Draw(shader, camera);
 		cuboid_y.Draw(shader, camera);
 		cuboid_z.Draw(shader, camera);
@@ -62,12 +71,20 @@ public:
 		curr_target.x = (target.x <= 1.0f && target.x >= 0.0f) ? target.x : curr_target.x;
 		curr_target.y = (target.y <= 1.0f && target.y >= 0.0f) ? target.y : curr_target.y;
 		curr_target.z = (target.z <= 0.5f && target.z >= 0.0f) ? target.z : curr_target.z;
+		double r = sqrt(curr_target.x*curr_target.x + curr_target.y*curr_target.y + curr_target.z*curr_target.z);
+		double phi = atan2(curr_target.y, curr_target.x)*180.0/M_PI;
+		double theta = asin(curr_target.z/r)*180.0/M_PI;
 		std::system("clear");
-		std::cout << "Current target: x = " << curr_target.x << ", y = " << curr_target.y << ", z = " << curr_target.z << std::endl;
+		std::cout << "Current target:" << std::endl <<
+				"x = " << curr_target.x << ", y = " << curr_target.y << ", z = " << curr_target.z << std::endl <<
+				"r = " << r << ", phi = " << phi << ", theta = " << theta << std::endl;
 	}
 
 protected:
 private:
+	Cuboid cuboid_x_axis;
+	Cuboid cuboid_y_axis;
+	Cuboid cuboid_z_axis;
 	Cuboid cuboid_x;
 	Cuboid cuboid_y;
 	Cuboid cuboid_z;

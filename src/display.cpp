@@ -79,17 +79,37 @@ void Display::Update(Camera& camera, RobotPPP& robot)
 
 			case SDLK_RETURN:
 				if(m_textInputActive) {
-					char* ptr = (char *)strstr(m_text.c_str(), "x:");
-					float x = (ptr != NULL) ? strtof(ptr + 2, NULL) : -1.0f;
-					ptr = (char *)strstr(m_text.c_str(), "y:");
-					float y = (ptr != NULL) ? strtof(ptr + 2, NULL) : -1.0f;
-					ptr = (char *)strstr(m_text.c_str(), "z:");
-					float z = (ptr != NULL) ? strtof(ptr + 2, NULL) : -1.0f;
-					m_text = "";
-					robot.SetTarget(glm::vec3(x, y, z));
+					float x, y, z;
+					char* ptr = (char *)strstr(m_text.c_str(), "r:");
+					if(ptr != NULL) {
+						float r = strtof(ptr + 2, NULL);
+						ptr = (char *)strstr(m_text.c_str(), "phi:");
+						float phi = (ptr != NULL) ? strtof(ptr + 4, NULL) : -1.0f;
+						ptr = (char *)strstr(m_text.c_str(), "theta:");
+						float theta = (ptr != NULL) ? strtof(ptr + 6, NULL) : -1.0f;
+						if(phi == -1.0f || theta == -1.0f) {
+							std::cout << "Bad parameters!" << std::endl;
+						} else {
+							theta = theta*M_PI/180.0f;
+							phi = phi*M_PI/180.0f;
+							x = r*cosf(theta)*cosf(phi);
+							y = r*cosf(theta)*sinf(phi);
+							z = r*sinf(theta);
+							robot.SetTarget(glm::vec3(x, y, z));
+						}
+					} else {
+						ptr = (char *)strstr(m_text.c_str(), "x:");
+						x = (ptr != NULL) ? strtof(ptr + 2, NULL) : -1.0f;
+						ptr = (char *)strstr(m_text.c_str(), "y:");
+						y = (ptr != NULL) ? strtof(ptr + 2, NULL) : -1.0f;
+						ptr = (char *)strstr(m_text.c_str(), "z:");
+						z = (ptr != NULL) ? strtof(ptr + 2, NULL) : -1.0f;
+						robot.SetTarget(glm::vec3(x, y, z));
+					}
 				} else {
-					std::cout << "Write coordinates according to a template: x: 0.5 y: 0.6 z: 0.7" << std::endl;
+					std::cout << "Write coordinates according to a template \"x: 0.5 y: 0.6 z: 0.7\" or \"r: 0.1 phi: 30 theta: 0" << std::endl;
 				}
+				m_text = "";
 				m_textInputActive = !m_textInputActive;
 				break;
 			}
