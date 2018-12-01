@@ -27,6 +27,7 @@ Shader::Shader(const std::string& fileName) {
 	// tells the GL what part of the data to read in our shader program
 	glBindAttribLocation(m_program, 0, "position");
 	glBindAttribLocation(m_program, 1, "texCoord");
+	glBindAttribLocation(m_program, 2, "normal");
 	// linking our program to application (which can fail)
 	// so we are checking it
 	glLinkProgram(m_program);
