@@ -10,7 +10,7 @@
 int main()
 {
 	Display display(WIDTH, HEIGHT, "Hello GL");
-	Camera camera(glm::vec3(0.0, 0.0, 4), 70.0f, (float)WIDTH/(float)HEIGHT, 0.01f, 1000.0f);
+	Camera camera(glm::vec3(0.0, 1.0, 4), 70.0f, (float)WIDTH/(float)HEIGHT, 0.01f, 1000.0f);
 
 	Shader sh_texturing("./res/shaders/texture");
 	Shader sh_coloring("./res/shaders/color");
@@ -26,13 +26,13 @@ int main()
 		display.Clear(0.0f, 0.15f, 0.3f, 1.0f);
 		float cosCounter = cosf(2*counter);
 
+		monkey.SetPos(glm::vec3(-1.5, 0, cosCounter));
 		monkey.SetRot(glm::vec3(0, counter, 0));
-		monkey.SetPos(glm::vec3(0, 0, cosCounter));
 		monkey.Draw(tex_wood, sh_lighting, camera);
 
-//		cuboid.SetPos(glm::vec3(2, 0, cosCounter));
-//		cuboid.SetRot(glm::vec3(0, 3*counter, 0));
-//		cuboid.Draw(sh_coloring, camera);
+		cuboid.SetPos(glm::vec3(1.5, 0, cosCounter));
+		cuboid.SetRot(glm::vec3(0, counter, 0));
+		cuboid.Draw(sh_coloring, camera);
 
 		counter += 0.01f;
 		display.Update();

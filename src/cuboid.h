@@ -8,15 +8,15 @@ class Cuboid {
 public:
 	Cuboid(glm::vec3 size) :
 		vertices {
-			Vertex(glm::vec3(-size.x/2.0, -size.y/2.0, size.z/2.0), glm::vec2(0.0, 0.0)),
-			Vertex(glm::vec3(size.x/2.0, -size.y/2.0, size.z/2.0), glm::vec2(1.0, 0.0)),
-			Vertex(glm::vec3(size.x/2.0, size.y/2.0, size.z/2.0), glm::vec2(1.0, 1.0)),
-			Vertex(glm::vec3(-size.x/2.0, size.y/2.0, size.z/2.0), glm::vec2(0.0, 1.0)),
+			Vertex(glm::vec3(-size.x/2.0, -size.y/2.0, size.z/2.0), glm::vec2(0.0, 0.0), glm::vec3(-1.0, -1.0, 1.0)),
+			Vertex(glm::vec3(size.x/2.0, -size.y/2.0, size.z/2.0), glm::vec2(1.0, 0.0), glm::vec3(1.0,-1.0, 1.0)),
+			Vertex(glm::vec3(size.x/2.0, size.y/2.0, size.z/2.0), glm::vec2(1.0, 1.0), glm::vec3(1.0, 1.0, 1.0)),
+			Vertex(glm::vec3(-size.x/2.0, size.y/2.0, size.z/2.0), glm::vec2(0.0, 1.0), glm::vec3(-1.0, 1.0, 1.0)),
 
-			Vertex(glm::vec3(-size.x/2.0, -size.y/2.0, -size.z/2.0), glm::vec2(0.0, 0.0)),
-			Vertex(glm::vec3(size.x/2.0, -size.y/2.0, -size.z/2.0), glm::vec2(1.0, 0.0)),
-			Vertex(glm::vec3(size.x/2.0, size.y/2.0, -size.z/2.0), glm::vec2(1.0, 1.0)),
-			Vertex(glm::vec3(-size.x/2.0, size.y/2.0, -size.z/2.0), glm::vec2(0.0, 1.0))
+			Vertex(glm::vec3(-size.x/2.0, -size.y/2.0, -size.z/2.0), glm::vec2(0.0, 0.0), glm::vec3(-1.0, -1.0, -1.0)),
+			Vertex(glm::vec3(size.x/2.0, -size.y/2.0, -size.z/2.0), glm::vec2(1.0, 0.0), glm::vec3(1.0, -1.0, -1.0)),
+			Vertex(glm::vec3(size.x/2.0, size.y/2.0, -size.z/2.0), glm::vec2(1.0, 1.0), glm::vec3(1.0, 1.0, -1.0)),
+			Vertex(glm::vec3(-size.x/2.0, size.y/2.0, -size.z/2.0), glm::vec2(0.0, 1.0), glm::vec3(-1.0, 1.0, -1.0))
 		},
 		indices {
 			{ 4, 0, 3, 4, 3, 7, 1, 5, 6, 1, 6, 2 },	// X axis
