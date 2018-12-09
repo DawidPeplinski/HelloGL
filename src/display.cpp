@@ -55,26 +55,60 @@ void Display::Clear(float r, float g, float b, float a)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
+enum {
+	K_W,
+	K_S,
+	K_A,
+	K_D,
+	K_SHIFT,
+	K_LEN
+};
+
+bool if_pressed[K_LEN] = { false };
+
 void Display::Update(Camera& camera)
 {
 	SDL_GL_SwapWindow(m_window);
+	float v = 0.1f;
+	if(if_pressed[K_SHIFT])
+		v *= 3.0f;
+	if(if_pressed[K_W])
+		camera.MoveForward(v);
+	if(if_pressed[K_S])
+		camera.MoveBackward(v);
+	if(if_pressed[K_A])
+		camera.MoveLeft(v);
+	if(if_pressed[K_D])
+		camera.MoveRight(v);
 
 	SDL_Event e;
 	while(SDL_PollEvent(&e)) {
 		switch(e.type) {
 		case SDL_KEYDOWN:
-			std::cout << "Key no. " << e.key.keysym.scancode << " pushed" << std::endl;
 			if(e.key.keysym.scancode == SDL_SCANCODE_W) {
-				camera.MoveForward();
+				if_pressed[K_W] = true;
 			} else if(e.key.keysym.scancode == SDL_SCANCODE_S) {
-				camera.MoveBackward();
+				if_pressed[K_S] = true;
 			} else if(e.key.keysym.scancode == SDL_SCANCODE_A) {
-				camera.MoveLeft();
+				if_pressed[K_A] = true;
 			} else if(e.key.keysym.scancode == SDL_SCANCODE_D) {
-				camera.MoveRight();
+				if_pressed[K_D] = true;
+			} else if(e.key.keysym.scancode == SDL_SCANCODE_LSHIFT) {
+				if_pressed[K_SHIFT] = true;
 			}
 			break;
 		case SDL_KEYUP:
+			if(e.key.keysym.scancode == SDL_SCANCODE_W) {
+				if_pressed[K_W] = false;
+			} else if(e.key.keysym.scancode == SDL_SCANCODE_S) {
+				if_pressed[K_S] = false;
+			} else if(e.key.keysym.scancode == SDL_SCANCODE_A) {
+				if_pressed[K_A] = false;
+			} else if(e.key.keysym.scancode == SDL_SCANCODE_D) {
+				if_pressed[K_D] = false;
+			} else if(e.key.keysym.scancode == SDL_SCANCODE_LSHIFT) {
+				if_pressed[K_SHIFT] = false;
+			}
 			break;
 		case SDL_MOUSEBUTTONDOWN:
 			break;

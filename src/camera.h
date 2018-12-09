@@ -27,20 +27,20 @@ public:
 		m_position += pos;
 	}
 
-	inline void MoveForward() {
-		m_position += m_forward*0.1f;
+	inline void MoveForward(float v) {
+		m_position += m_forward*v;
 	}
 
-	inline void MoveBackward() {
-		m_position -= m_forward*0.1f;
+	inline void MoveBackward(float v) {
+		m_position -= m_forward*v;
 	}
 
-	inline void MoveRight() {
-		m_position += glm::vec3(-m_forward.z, 0.0f, m_forward.x)*0.1f;
+	inline void MoveRight(float v) {
+		m_position += glm::vec3(-m_forward.z, 0.0f, m_forward.x)*v;
 	}
 
-	inline void MoveLeft() {
-		m_position -= glm::vec3(-m_forward.z, 0.0f, m_forward.x)*0.1f;
+	inline void MoveLeft(float v) {
+		m_position -= glm::vec3(-m_forward.z, 0.0f, m_forward.x)*v;
 	}
 
 	inline void Rotate(float x_angle, float y_angle) {
@@ -51,13 +51,14 @@ public:
 		float s = q.w;
 		v = 2.0f*glm::dot(u, v)*u + (s*s - glm::dot(u, u))*v + 2.0f*s*glm::cross(u, v);
 		//rotate around the axis that is perpendicular to a current xz vector
-		if((m_forward.y < 0.9 && y_angle > 0) || (m_forward.y > -0.9 && y_angle < 0)) {
+		if((m_forward.y < 0.975 && y_angle > 0) || (m_forward.y > -0.975 && y_angle < 0)) {
 			q = glm::vec4(sinf(y_angle*M_PI/180.0f/2.0f)*-m_forward.z, 0.0f, sinf(y_angle*M_PI/180.0f/2.0f)*m_forward.x, cosf(y_angle*M_PI/180.0f/2.0f));
 			u = glm::vec3(q.x, q.y, q.z);
 			s = q.w;
 			v = 2.0f*glm::dot(u, v)*u + (s*s - glm::dot(u, u))*v + 2.0f*s*glm::cross(u, v);
 		}
-		std::cout << m_forward.x << " " << m_forward.y << " " << m_forward.z << std::endl;
+		// normalising vector after every multiplication
+		v = v / sqrtf(v.x*v.x + v.y*v.y + v.z*v.z);
 		m_forward = v;
 	}
 
