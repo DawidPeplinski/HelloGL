@@ -13,7 +13,7 @@
 
 class Texture {
 public:
-	Texture(const std::string& fileName);
+	Texture(const std::string& fileName, bool if_linear);
 	// unit determines which texture we are choosing
 	void Bind(unsigned int unit);
 	void Unbind();

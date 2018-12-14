@@ -38,6 +38,8 @@ Display::Display(int width, int height, const std::string& title)
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CCW);
 	glCullFace(GL_BACK);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	SDL_WarpMouseInWindow(m_window, width/2, height/2);
 	SDL_ShowCursor(0);
 }
@@ -85,7 +87,9 @@ void Display::Update(Camera& camera)
 	while(SDL_PollEvent(&e)) {
 		switch(e.type) {
 		case SDL_KEYDOWN:
-			if(e.key.keysym.scancode == SDL_SCANCODE_W) {
+			if(e.key.repeat) {
+				// run over
+			} else if(e.key.keysym.scancode == SDL_SCANCODE_W) {
 				if_pressed[K_W] = true;
 			} else if(e.key.keysym.scancode == SDL_SCANCODE_S) {
 				if_pressed[K_S] = true;

@@ -12,6 +12,7 @@ CPP_SRCS += \
 ../src/mesh.cpp \
 ../src/obj_loader.cpp \
 ../src/shader.cpp \
+../src/text.cpp \
 ../src/texture.cpp 
 
 OBJS += \
@@ -21,6 +22,7 @@ OBJS += \
 ./src/obj_loader.o \
 ./src/shader.o \
 ./src/stb_image.o \
+./src/text.o \
 ./src/texture.o 
 
 C_DEPS += \
@@ -32,6 +34,7 @@ CPP_DEPS += \
 ./src/mesh.d \
 ./src/obj_loader.d \
 ./src/shader.d \
+./src/text.d \
 ./src/texture.d 
 
 

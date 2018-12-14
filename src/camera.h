@@ -43,6 +43,10 @@ public:
 		m_position -= glm::vec3(-m_forward.z, 0.0f, m_forward.x)*v;
 	}
 
+	inline void MoveDownward(float v) {
+		m_position -= glm::vec3(0.0f, v, 0.0f);
+	}
+
 	inline void Rotate(float x_angle, float y_angle) {
 		glm::vec3 v = m_forward;
 		//rotate around y axis
