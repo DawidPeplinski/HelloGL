@@ -68,10 +68,10 @@ enum {
 
 bool if_pressed[K_LEN] = { false };
 
-void Display::Update(Camera& camera)
+void Display::Update(Camera& camera, double dt)
 {
 	SDL_GL_SwapWindow(m_window);
-	float v = 0.1f;
+	float v = dt/100.0f;
 	if(if_pressed[K_SHIFT])
 		v *= 3.0f;
 	if(if_pressed[K_W])

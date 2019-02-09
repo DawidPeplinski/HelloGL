@@ -6,7 +6,6 @@
  */
 
 #include "mesh.h"
-#include <vector>
 
 Mesh::Mesh(const std::string& fileName) {
 	IndexedModel model = OBJModel(fileName).ToIndexedModel();
@@ -67,17 +66,12 @@ void Mesh::InitMesh(const IndexedModel& model) {
 }
 
 void Mesh::Draw(Texture& texture, Shader& shader, Camera& camera) {
-	shader.Bind();
 	texture.Bind(0);
 	DrawMesh(shader, camera);
-	texture.Unbind();
-	shader.Unbind();
 }
 
 void Mesh::Draw(Shader& shader, Camera& camera) {
-	shader.Bind();
 	DrawMesh(shader, camera);
-	shader.Unbind();
 }
 
 void Mesh::DrawMesh(Shader& shader, Camera& camera) {

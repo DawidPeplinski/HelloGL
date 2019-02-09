@@ -31,8 +31,8 @@ Text::Text() {
 // Always print text right before frame's update, because the depth buffer is cleared
 void Text::Print(const std::string& text, glm::vec3 pos, float size, Camera& camera) {
 	glClear(GL_DEPTH_BUFFER_BIT);
-	int len = text.length();
-	for(int i = 0; i < len; i++) {
+	m_shader->Bind();
+	for(int i = 0; i < (int)text.length(); i++) {
 		m_letters[(unsigned char)text[i]]->SetScale(glm::vec3(size, size, size));
 		m_letters[(unsigned char)text[i]]->SetPos(glm::vec3(pos.x + i*size, pos.y, pos.z));
 		m_letters[(unsigned char)text[i]]->Draw(*m_font, *m_shader, camera);

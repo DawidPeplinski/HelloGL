@@ -1,5 +1,6 @@
 #include <iostream>
 #include <GL/glew.h>
+#include "timer.h"
 #include "display.h"
 #include "mesh.h"
 #include "text.h"
@@ -13,6 +14,7 @@ int main()
 	Display display(WIDTH, HEIGHT, "Hello GL");
 	Camera camera(glm::vec3(0.0f, 3.0f, 4.0f), 70.0f, (float)WIDTH/(float)HEIGHT, 0.01f, 1000.0f);
 	Camera camera_hud(glm::vec3(0.0f, 0.0f, 1.0f), 70.0f, (float)WIDTH/(float)HEIGHT, 0.01f, 1000.0f);
+	Timer timer;
 
 	Shader sh_texturing("./res/shaders/texture");
 	Shader sh_coloring("./res/shaders/color");
@@ -40,18 +42,22 @@ int main()
 
 	float counter = 0.0f;
 	while(!display.isClosed()) {
+		double dt = timer.GetDt();
 		display.Clear(0.0f, 0.15f, 0.3f, 1.0f);
 
+		sh_lighting.Bind();
 		monkey.SetRot(glm::vec3(0, counter, 0));
 		monkey.Draw(tex_wood, sh_lighting, camera);
 
+		sh_coloring.Bind();
 		cuboid.SetRot(glm::vec3(0, counter, 0));
 		cuboid.Draw(sh_coloring, camera);
 
+		sh_texturing.Bind();
 		ground.Draw(tex_bricks, sh_texturing, camera);
 
 		txt.Print("Mycraft Alpha v0.1", glm::vec3(-0.9f, 0.67f, 0.0f), 0.04f, camera_hud);
-		display.Update(camera);
+		display.Update(camera, dt);
 		counter += 0.01f;
 	}
 
